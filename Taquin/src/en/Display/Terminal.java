@@ -8,7 +8,7 @@ import java.awt.Event;
 public class Terminal {
     
     static public void main(String[] args) {
-	final String message = args[0] + "          ";
+	final String message = "Test          ";
 	System.out.print((char)Event.ESCAPE + "7");
 	Timer t = new Timer(200, new ActionListener() {
 		int i=0;
