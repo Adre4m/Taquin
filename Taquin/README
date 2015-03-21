@@ -1,11 +1,11 @@
-Graphe idée :
+Graphe idee :
 	- : attribut
-	-> : méthode
+	-> : methode
 	
 	- sommet/noeud = position du jeu
 	- arc = mouvement pour arriver a un nouveau sommet
 
-	-> Génération des noeuds a chaque tours + arret des que solution trouver
+	-> Generation des noeuds a chaque tours + arret des que solution trouver
 	-> Verification d'absence de doublons (car doublons <=> mvt inutile)
 	-> Parcours de graphe avec parcours largeur => premiere solution trouver est la solution optimale
 
