@@ -1,49 +1,41 @@
 package en.Game;
 
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
-import en.Parser.Parser;
-
 public class Taquin {
 
-	private static int[][] game = {};
-	private static int posX = 0;
-	private static int posY = 0;
-	
+	private int[][] game = {};
+	private int posX;
+	private int posY;
 
-	@SuppressWarnings("resource")
-	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
-		try {
-			game = Parser.read("test.taq");
-			position();
-			while (!win()) {
-				System.out.println(disp());
-				boolean ok = false;
-				do {
-					System.out
-							.println("\n8 - North, 6 - East, 2 - South, 4 - West");
-					String dir = in.nextLine();
-					if (dir.equals("8") || dir.equals("6") || dir.equals("2")
-							|| dir.equals("4")) {
-						play(dir);
-						ok = true;
-					} else {
-						System.out.println("Wrong input");
-						ok = false;
-					}
-				} while (!ok);
-			}
-			disp();
-			if (win())
-				System.out.println("Gagné");
-		} catch (FileNotFoundException fnfe) {
-			fnfe.printStackTrace();
-		}
+	public Taquin(int[][] game) {
+		this.game = game;
+		position();
 	}
 
-	public static String disp() {
+	public int[][] getGame() {
+		return game;
+	}
+
+	public void setGame(int[][] game) {
+		this.game = game;
+	}
+
+	public int getPosX() {
+		return posX;
+	}
+
+	public void setPosX(int posX) {
+		this.posX = posX;
+	}
+
+	public int getPosY() {
+		return posY;
+	}
+
+	public void setPosY(int posY) {
+		this.posY = posY;
+	}
+
+	public String disp() {
 		String s = "";
 		for (int i = 0; i < game.length; ++i) {
 			s += game[i][0];
@@ -55,7 +47,7 @@ public class Taquin {
 		return s;
 	}
 
-	public static boolean win() {
+	public boolean win() {
 		if (posX != game.length - 1 && posY != game[0].length - 1)
 			return false;
 		else {
@@ -76,7 +68,7 @@ public class Taquin {
 		}
 	}
 
-	public static void position() {
+	public void position() {
 		for (int i = 0; i < game.length; ++i)
 			for (int j = 0; j < game[i].length; ++j)
 				if (game[i][j] == 0) {
@@ -86,7 +78,7 @@ public class Taquin {
 				}
 	}
 
-	public static void play(String dir) {
+	public void play(String dir) {
 		// position();
 		switch (dir) {
 		case "2":
@@ -117,7 +109,7 @@ public class Taquin {
 		System.out.println("TaquinPasDirectionException");
 	}
 
-	public static void exchange(String dir) {
+	public void exchange(String dir) {
 		switch (dir) {
 		case "2":
 			game[posX][posY] = game[posX - 1][posY];
@@ -142,7 +134,7 @@ public class Taquin {
 		}
 	}
 
-	public static boolean soluble() {
+	public boolean soluble() {
 		int[] t = new int[game.length * game[0].length];
 		int cpt = 0;
 		for (int i = 0; i < game.length; ++i)
@@ -150,10 +142,10 @@ public class Taquin {
 				t[cpt] = game[i][j];
 				cpt++;
 			}
-		return (mov0() % 2) == (triBulle(t) %2);
+		return (mov0() % 2) == (triBulle(t) % 2);
 	}
 
-	public static int triBulle(int[] tab) {
+	public int triBulle(int[] tab) {
 		// tri
 		int nbEchange = 0;
 		for (int i = 0; i < tab.length; ++i) {
@@ -176,20 +168,13 @@ public class Taquin {
 		return nbEchange;
 	}
 
-	public static int mov0() {
-		int posX0 = posX;
-		int posY0 = posY;
-		int nbMov0 = 0;
-		while (posX0 < game.length - 1 || posY0 < game[0].length - 1) {
-			if (posX0 < game.length - 1) {
-				posX0++;
-				nbMov0++;
-			}
-			if (posY0 < game[0].length - 1) {
-				posY0++;
-				nbMov0++;
-			}
-		}
-		return nbMov0;
+	public int mov0() {
+		/*
+		 * int posX0 = posX; int posY0 = posY; int nbMov0 = 0; while (posX0 <
+		 * game.length - 1 || posY0 < game[0].length - 1) { if (posX0 <
+		 * game.length - 1) { posX0++; nbMov0++; } if (posY0 < game[0].length -
+		 * 1) { posY0++; nbMov0++; } } return nbMov0;
+		 */
+		return (game.length - 1 - posX) + (game[0].length - 1 - posY);
 	}
 }
