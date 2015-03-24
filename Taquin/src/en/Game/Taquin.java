@@ -79,7 +79,6 @@ public class Taquin {
 	}
 
 	public void play(String dir) {
-		// position();
 		switch (dir) {
 		case "2":
 			if (posX != 0) {

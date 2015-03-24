@@ -19,18 +19,4 @@ public class Parser {
 			}
 		return taquin;
 	}
-
-	public static void main(String[] args) {
-		try {
-			int[][] taquin = read("jeu.taq");
-			for (int i = 0; i < taquin.length; i++)
-				for (int j = 0; j < taquin[0].length; j++)
-					System.out.print(taquin[i][j] + ", ");
-		} catch (FileNotFoundException fnfe) {
-			fnfe.printStackTrace();
-			System.out.println("le fichier n'existe pas");
-		}
-
-	}
-
 }
