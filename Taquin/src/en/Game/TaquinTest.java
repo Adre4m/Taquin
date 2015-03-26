@@ -20,12 +20,6 @@ public class TaquinTest {
 	public void tearDown() throws Exception {
 	}
 
-	/*@Test
-	public void testTri() {
-		int[] tab = { 1, 2, 3, 4, 5, 6, 0, 7, 8 };
-		assertEquals(2, taquin.triInsert(tab));
-	}*/
-
 	@Test
 	public void testMov0() {
 		assertEquals(2, taquin.mov0());

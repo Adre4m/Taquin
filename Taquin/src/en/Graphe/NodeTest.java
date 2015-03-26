@@ -42,10 +42,10 @@ public class NodeTest {
 	public void testMove() {
 		boolean equal = true;
 		int[][] state = { { 1, 5, 6 }, { 2, 7, 0 }, { 4, 8, 3 } };
-		int[][] res = test.makeMove("South");
-		for(int i = 0; i < 3 && equal; ++i)
-			for(int j = 0; j < 3 && equal; ++j)
-				if(state[i][j] != res[i][j])
+		Node res = test.makeMove("South");
+		for (int i = 0; i < 3 && equal; ++i)
+			for (int j = 0; j < 3 && equal; ++j)
+				if (state[i][j] != res.getState()[i][j])
 					equal = false;
 		assertEquals(true, equal);
 	}

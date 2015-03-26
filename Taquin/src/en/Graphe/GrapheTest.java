@@ -19,13 +19,9 @@ public class GrapheTest {
 
 	@Before
 	public void setUp() throws Exception {
-		/*
-		 * int[][] state = { { 7, 3, 1 }, { 6, 2, 4 }, { 8, 5, 0 } };
-		 * test.setState(state); g.addNode(null, test);
-		 */
 		Taquin t = new Taquin(Parser.read("test1.taq"));
-		if (t.solvable())
-			g = new Graphe(t);
+		// if (t.solvable())
+		g = new Graphe(t);
 	}
 
 	@After
@@ -35,15 +31,13 @@ public class GrapheTest {
 	@Test
 	public void testGrow() {
 		if (!g.isEmpty()) {
-			System.out.println("Solvable");
 			ArrayList<Node> next = new ArrayList<Node>();
 			next.add(g.getGraphe().iterator().next());
 			Node n = g.search(next);
-			System.out.println(n);
+			//System.out.println("Grahpe début :\n" + g + "Graphe fin.\n");
+			System.out.println("Chemin solution :\n" + n);
 			assertEquals(true, n.win());
-		} else {
-			System.out.println("Not solvable");
+		} else
 			assertEquals(true, true);
-		}
 	}
 }
