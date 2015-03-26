@@ -27,7 +27,7 @@ public class TaquinTest {
 
 	@Test
 	public void testSoluble() {
-		assertEquals(false, taquin.soluble());
+		assertEquals(false, taquin.solvable());
 	}
 
 }

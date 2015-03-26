@@ -133,7 +133,7 @@ public class Taquin {
 		}
 	}
 
-	public boolean soluble() {
+	public boolean solvable() {
 		int[] t = new int[game.length * game[0].length];
 		int cpt = 0;
 		for (int i = 0; i < game.length; ++i)

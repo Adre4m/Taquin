@@ -8,6 +8,7 @@ import java.util.Set;
 public class Graphe {
 
 	private Set<Node> graphe;
+	int nbMove = -1;
 
 	public Graphe() {
 		graphe = new HashSet<Node>();
@@ -15,6 +16,11 @@ public class Graphe {
 
 	public Graphe(Set<Node> graphe) {
 		this.graphe = graphe;
+	}
+
+	public Graphe(Node n) {
+		graphe = new HashSet<Node>();
+		addNode(null, n);
 	}
 
 	public boolean contains(Object o) {
@@ -47,12 +53,12 @@ public class Graphe {
 				toAdd.add(other);
 			}
 		}
-		//System.out.println(toGrow);
+		// System.out.println(toGrow);
 		toAdd.removeAll(toDel);
 		toGrow.removeAll(toDel);
-		//System.out.println(toGrow);
+		// System.out.println(toGrow);
 		toGrow.addAll(toAdd);
-		//System.out.println(toGrow);
+		// System.out.println(toGrow);
 		/*
 		 * Iterator<Node> it = graphe.iterator(); ArrayList<Node> toGrow = new
 		 * ArrayList<Node>(); while (it.hasNext()) { Node node = it.next(); if
@@ -74,11 +80,12 @@ public class Graphe {
 	}
 
 	public boolean addNode(Node father, Node son) {
-		/*if (!contains(son)) {*/
-			son.setFather(father);
-			return graphe.add(son);
-		/*} else
-			return false;*/
+		/* if (!contains(son)) { */
+		son.setFather(father);
+		return graphe.add(son);
+		/*
+		 * } else return false;
+		 */
 	}
 
 	public String toString() {
@@ -90,6 +97,7 @@ public class Graphe {
 	}
 
 	public Node search(ArrayList<Node> next) {
+		nbMove++;
 		if (next == null)
 			next = new ArrayList<Node>();
 		Iterator<Node> it = next.iterator();
@@ -98,9 +106,9 @@ public class Graphe {
 			n = it.next();
 		if (n != null && n.win())
 			return n;
-		//System.out.println(next);
+		// System.out.println(next);
 		grow(next);
-		//System.out.println(this.graphe);
+		// System.out.println(this.graphe);
 		return search(next);
 	}
 }
