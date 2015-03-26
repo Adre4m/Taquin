@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import en.Game.Taquin;
+
 public class Graphe {
 
 	private Set<Node> graphe;
@@ -13,8 +15,19 @@ public class Graphe {
 		graphe = new HashSet<Node>();
 	}
 
+	public Graphe(Node origin) {
+		graphe = new HashSet<Node>();
+		addNode(null, origin);
+	}
+
 	public Graphe(Set<Node> graphe) {
 		this.graphe = graphe;
+	}
+
+	public Graphe(Taquin t) {
+		Node n = new Node(t.getGame());
+		graphe = new HashSet<Node>();
+		addNode(null, n);
 	}
 
 	public boolean contains(Object o) {
@@ -63,7 +76,7 @@ public class Graphe {
 	public String toString() {
 		Iterator<Node> it = graphe.iterator();
 		String s = "";
-		while(it.hasNext())
+		while (it.hasNext())
 			s += it.next().toString() + "\n";
 		return s;
 	}
@@ -109,5 +122,9 @@ public class Graphe {
 				n = comp;
 		}
 		return n;
+	}
+
+	public boolean isEmpty() {
+		return graphe.isEmpty();
 	}
 }

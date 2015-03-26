@@ -8,6 +8,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import en.Game.Taquin;
+import en.Parser.Parser;
+
 public class GrapheTest {
 
 	Node test = new Node();
@@ -16,10 +19,13 @@ public class GrapheTest {
 
 	@Before
 	public void setUp() throws Exception {
-		int[][] state = { { 7, 3, 1 }, { 6, 2, 4 }, { 8, 5, 0 } };
-		test.setState(state);
-		g.addNode(null, test);
-		System.out.println(g);
+		/*
+		 * int[][] state = { { 7, 3, 1 }, { 6, 2, 4 }, { 8, 5, 0 } };
+		 * test.setState(state); g.addNode(null, test);
+		 */
+		Taquin t = new Taquin(Parser.read("test1.taq"));
+		if (t.soluble())
+			g = new Graphe(t);
 	}
 
 	@After
@@ -28,10 +34,16 @@ public class GrapheTest {
 
 	@Test
 	public void testGrow() {
-		ArrayList<Node> next = new ArrayList<Node>();
-		next.add(g.getGraphe().iterator().next());
-		Node n = g.search(next);
-		System.out.println(n);
-		assertEquals(true, n.win());
+		if (!g.isEmpty()) {
+			System.out.println("Solvable");
+			ArrayList<Node> next = new ArrayList<Node>();
+			next.add(g.getGraphe().iterator().next());
+			Node n = g.search(next);
+			System.out.println(n);
+			assertEquals(true, n.win());
+		} else {
+			System.out.println("Not solvable");
+			assertEquals(true, true);
+		}
 	}
 }

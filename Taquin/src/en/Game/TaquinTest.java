@@ -12,7 +12,7 @@ public class TaquinTest {
 
 	@Before
 	public void setUp() throws Exception {
-		int[][] game = { { 1, 5, 6 }, { 2, 7, 3 }, { 4, 8, 0 } };
+		int[][] game = { { 2, 1, 4 }, { 7, 3, 5 }, { 8, 6, 0 } };
 		taquin = new Taquin(game);
 	}
 
