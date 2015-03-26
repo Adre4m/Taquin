@@ -24,7 +24,7 @@ public class Graphe {
 		graphe = new HashSet<Node>();
 		addNode(null, n);
 	}
-
+	
 	public Graphe(Taquin t) {
 		Node n = new Node(t.getGame());
 		graphe = new HashSet<Node>();
@@ -44,7 +44,7 @@ public class Graphe {
 			return false;
 		}
 	}
-
+	
 	public boolean isEmpty() {
 		return graphe.isEmpty();
 	}
