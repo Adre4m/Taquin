@@ -7,7 +7,7 @@ public class Node {
 	private Node father = null;
 	private int[][] state;
 	private boolean hasSons = false;
-	private String process = "unreach";
+	private int weight = 0;
 
 	public Node() {
 		state = null;
@@ -21,7 +21,7 @@ public class Node {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((father == null) ? 0 : father.hashCode());
+		//result = prime * result + ((father == null) ? 0 : father.hashCode());
 		result = prime * result + (hasSons ? 1231 : 1237);
 		result = prime * result + Arrays.hashCode(state);
 		return result;
@@ -71,20 +71,22 @@ public class Node {
 		this.hasSons = hasSons;
 	}
 
-	public String getProcess() {
-		return process;
+	public int getWeight() {
+		return weight;
 	}
 
-	public void setProcess(String process) {
-		this.process = process;
+	public void setWeight(int weight) {
+		this.weight = weight;
 	}
 
 	public ArrayList<String> possibleMoves() {
+		System.out.println("Noeud en cours :\n" + this);
 		int[] xy = new int[2];
 		pos(xy);
 		int x = xy[0];
 		int y = xy[1];
 		ArrayList<String> moves = new ArrayList<String>();
+		System.out.println("x = " + x + "; y = " + y);
 		if (x != 0)
 			moves.add("South");
 		if (x != state.length - 1)
@@ -98,7 +100,7 @@ public class Node {
 
 	public void pos(int[] xy) {
 		for (int i = 0; i < state.length; ++i)
-			for (int j = 0; j < state.length; ++j)
+			for (int j = 0; j < state[0].length; ++j)
 				if (state[i][j] == 0) {
 					xy[0] = i;
 					xy[1] = j;
@@ -177,5 +179,21 @@ public class Node {
 			}
 			return true;
 		}
+	}
+
+	public int[][] getVictory() {
+		int[][] victory = new int[state.length][state[0].length];
+		int cpt = 1;
+		for (int i = 0; i < victory.length; ++i) {
+			int max = victory.length;
+			if (i == victory.length - 1)
+				max--;
+			for (int j = 0; j < max; ++j) {
+				victory[i][j] = cpt;
+				cpt++;
+			}
+		}
+		victory[state.length - 1][state[0].length - 1] = 0;
+		return victory;
 	}
 }

@@ -31,38 +31,17 @@ public class Graphe {
 		}
 	}
 
-	public void grow(ArrayList<Node> toGrow) {
-		Iterator<Node> it = toGrow.iterator();
-		ArrayList<Node> toAdd = new ArrayList<Node>();
-		ArrayList<Node> toDel = new ArrayList<Node>();
-		while (it.hasNext()) {
-			Node node = it.next();
-			ArrayList<String> possibleMoves = node.possibleMoves();
-			Iterator<String> moves = possibleMoves.iterator();
-			while (moves.hasNext()) {
-				String dir = moves.next();
-				Node other = new Node(node.makeMove(dir));
-				addNode(node, other);
-				toDel.add(node);
-				toAdd.add(other);
-			}
+	public ArrayList<Node> grow(Node toGrow) {
+		ArrayList<Node> next = new ArrayList<Node>();
+		ArrayList<String> possibleMoves = toGrow.possibleMoves();
+		Iterator<String> moves = possibleMoves.iterator();
+		while (moves.hasNext()) {
+			String dir = moves.next();
+			Node n = new Node(toGrow.makeMove(dir));
+			addNode(toGrow, n);
+			next.add(n);
 		}
-		//System.out.println(toGrow);
-		toAdd.removeAll(toDel);
-		toGrow.removeAll(toDel);
-		//System.out.println(toGrow);
-		toGrow.addAll(toAdd);
-		//System.out.println(toGrow);
-		/*
-		 * Iterator<Node> it = graphe.iterator(); ArrayList<Node> toGrow = new
-		 * ArrayList<Node>(); while (it.hasNext()) { Node node = it.next(); if
-		 * (!node.isHasSons()) { toGrow.add(node); node.setHasSons(true); } } it
-		 * = toGrow.iterator(); while (it.hasNext()) { Node node = it.next();
-		 * ArrayList<String> possibleMoves = node.possibleMoves();
-		 * Iterator<String> moves = possibleMoves.iterator(); while
-		 * (moves.hasNext()) { String dir = moves.next(); Node other = new
-		 * Node(node.makeMove(dir)); addNode(node, other); f.add(other); } }
-		 */
+		return next;
 	}
 
 	public Set<Node> getGraphe() {
@@ -74,15 +53,19 @@ public class Graphe {
 	}
 
 	public boolean addNode(Node father, Node son) {
-		/*if (!contains(son)) {*/
+		if (!contains(son)) {
 			son.setFather(father);
 			return graphe.add(son);
-		/*} else
-			return false;*/
+		} else
+			return false;
 	}
 
 	public String toString() {
-		return graphe.toString();
+		Iterator<Node> it = graphe.iterator();
+		String s = "";
+		while(it.hasNext())
+			s += it.next().toString() + "\n";
+		return s;
 	}
 
 	public int length() {
@@ -93,14 +76,38 @@ public class Graphe {
 		if (next == null)
 			next = new ArrayList<Node>();
 		Iterator<Node> it = next.iterator();
-		Node n = it.next();
-		while (!n.win() && it.hasNext())
+		Node n = null;
+		boolean win = false;
+		while (!win && it.hasNext()) {
 			n = it.next();
-		if (n != null && n.win())
+			win = n.win();
+		}
+		if (n != null && win)
 			return n;
-		//System.out.println(next);
-		grow(next);
-		//System.out.println(this.graphe);
-		return search(next);
+		return search(grow(weight(next)));
+	}
+
+	public Node weight(ArrayList<Node> toCheck) {
+		Iterator<Node> it = toCheck.iterator();
+		while (it.hasNext()) {
+			Node n = it.next();
+			int[][] victory = n.getVictory();
+			for (int i = 0; i < victory.length; ++i)
+				for (int j = 0; j < victory[0].length; ++j)
+					if (n.getState()[i][j] != victory[i][j])
+						n.setWeight(n.getWeight() + 1);
+		}
+		return min(toCheck);
+	}
+
+	public Node min(ArrayList<Node> toCheck) {
+		Iterator<Node> it = toCheck.iterator();
+		Node n = it.next();
+		while (it.hasNext()) {
+			Node comp = it.next();
+			if (n.getWeight() > comp.getWeight())
+				n = comp;
+		}
+		return n;
 	}
 }

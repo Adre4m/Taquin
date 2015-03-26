@@ -16,9 +16,10 @@ public class GrapheTest {
 
 	@Before
 	public void setUp() throws Exception {
-		int[][] state = { { 4, 1, 2 }, { 5, 3, 6 }, { 0, 7, 8 } };
+		int[][] state = { { 7, 3, 1 }, { 6, 2, 4 }, { 8, 5, 0 } };
 		test.setState(state);
 		g.addNode(null, test);
+		System.out.println(g);
 	}
 
 	@After
@@ -29,8 +30,8 @@ public class GrapheTest {
 	public void testGrow() {
 		ArrayList<Node> next = new ArrayList<Node>();
 		next.add(g.getGraphe().iterator().next());
-		g.search(next);
-		System.out.println(g);
-		assertEquals(true, false);
+		Node n = g.search(next);
+		System.out.println(n);
+		assertEquals(true, n.win());
 	}
 }
