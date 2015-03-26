@@ -133,18 +133,18 @@ public class Taquin {
 		}
 	}
 
-	public boolean soluble() {
+	public boolean solvable() {
 		int[] t = new int[game.length * game[0].length];
 		int cpt = 0;
 		for (int i = 0; i < game.length; ++i)
-			for (int j = 0; j < game[i].length; ++j) {
+			for (int j = 0; j < game[0].length; ++j) {
 				t[cpt] = game[i][j];
 				cpt++;
 			}
-		return (mov0() % 2) == (triBulle(t) % 2);
+		return (mov0() % 2) == (triInsert(t) % 2);
 	}
 
-	public int triBulle(int[] tab) {
+	public int triInsert(int[] tab) {
 		// tri
 		int nbEchange = 0;
 		for (int i = 0; i < tab.length; ++i) {
@@ -155,7 +155,7 @@ public class Taquin {
 				break;
 			}
 		}
-		for (int i = tab.length - 1; i > 0; --i) {
+		for (int i = tab.length - 1; i > 0; --i)
 			for (int j = 0; j < i - 1; ++j)
 				if (tab[j] > tab[j + 1]) {
 					int tmp = tab[j];
@@ -163,7 +163,6 @@ public class Taquin {
 					tab[j + 1] = tmp;
 					nbEchange++;
 				}
-		}
 		return nbEchange;
 	}
 

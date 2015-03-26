@@ -24,7 +24,7 @@ public class GrapheTest {
 		 * test.setState(state); g.addNode(null, test);
 		 */
 		Taquin t = new Taquin(Parser.read("test1.taq"));
-		if (t.soluble())
+		if (t.solvable())
 			g = new Graphe(t);
 	}
 
