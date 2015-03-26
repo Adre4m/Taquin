@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import en.Game.Taquin;
+
 public class Graphe {
 
 	private Set<Node> graphe;
@@ -19,6 +21,12 @@ public class Graphe {
 	}
 
 	public Graphe(Node n) {
+		graphe = new HashSet<Node>();
+		addNode(null, n);
+	}
+	
+	public Graphe(Taquin t) {
+		Node n = new Node(t.getGame());
 		graphe = new HashSet<Node>();
 		addNode(null, n);
 	}
