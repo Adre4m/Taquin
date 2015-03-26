@@ -167,12 +167,6 @@ public class Taquin {
 	}
 
 	public int mov0() {
-		/*
-		 * int posX0 = posX; int posY0 = posY; int nbMov0 = 0; while (posX0 <
-		 * game.length - 1 || posY0 < game[0].length - 1) { if (posX0 <
-		 * game.length - 1) { posX0++; nbMov0++; } if (posY0 < game[0].length -
-		 * 1) { posY0++; nbMov0++; } } return nbMov0;
-		 */
 		return (game.length - 1 - posX) + (game[0].length - 1 - posY);
 	}
 }
