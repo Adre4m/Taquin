@@ -94,6 +94,49 @@ public class Node {
 		this.weight = weight;
 	}
 
+	public int getH1() {
+		h1();
+		return h1;
+	}
+
+	public void setH1(int h1) {
+		this.h1 = h1;
+	}
+
+	public int getH2() {
+		h2();
+		return h2;
+	}
+
+	public void setH2(int h2) {
+		this.h2 = h2;
+	}
+
+	public int getG() {
+		g();
+		return g;
+	}
+
+	public void setG(int g) {
+		this.g = g;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
 	public ArrayList<String> possibleMoves() {
 		ArrayList<String> moves = new ArrayList<String>();
 		if (x != 0)
@@ -240,5 +283,32 @@ public class Node {
 		h1();
 		h2();
 		return g + h1 + h2;
+	}
+
+	public void place(int i, int j, int num) {
+		if (state[i][j] == 0) {
+			state[i][j] = num;
+			if (i > 0)
+				if (state[i - 1][j] == num)
+					state[i - 1][j] = 0;
+		}
+		if (j > 0)
+			if (state[i][j - 1] == num)
+				state[i][j - 1] = 0;
+		if (i < state.length)
+			if (state[i + 1][j] == num)
+				state[i + 1][j] = 0;
+		if (j < state[0].length)
+			if (state[i][j + 1] == num)
+				state[i][j + 1] = 0;
+	}
+
+	public boolean isPlaced() {
+		boolean result = true;
+		for (int i = 0; i < state.length; ++i)
+			for (int j = 0; j < state[0].length; ++j)
+				if (state[i][j] != i + j * 4)
+					result = false;
+		return result;
 	}
 }
