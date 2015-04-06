@@ -1,13 +1,15 @@
 package en.Graphe;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Scanner;
 
 public class Node {
 	private Node father = null;
-	private int[][] state;
+	private String state = "";
+	int length;
+	int high;
 	private boolean hasSons = false;
-	private String process = "unreach";
+	private String process;
 	private int weight = 0;
 	int h1 = 0;
 	int h2 = 0;
@@ -17,11 +19,26 @@ public class Node {
 
 	public Node() {
 		state = null;
+		process = "unreach";
 	}
 
-	public Node(int[][] state) {
+	public Node(int[][] game) {
+		length = game.length;
+		high = game[0].length;
+		for (int i = 0; i < game.length; ++i) {
+			int max = game[0].length;
+			if (i == game.length -1)
+				max--;
+			for (int j = 0; j < max; ++j)
+				state += game[i][j] + " ";
+		}
+		state += game[game.length - 1][game[0].length - 1];
+	}
+
+	public Node(String state) {
 		this.state = state;
 		pos();
+		process = "unreach";
 	}
 
 	@Override
@@ -30,7 +47,7 @@ public class Node {
 		int result = 1;
 		// result = prime * result + ((father == null) ? 0 : father.hashCode());
 		result = prime * result + (hasSons ? 1231 : 1237);
-		result = prime * result + Arrays.hashCode(state);
+		result = prime * result + state.hashCode();
 		return result;
 	}
 
@@ -43,15 +60,7 @@ public class Node {
 		if (getClass() != obj.getClass())
 			return false;
 		Node other = (Node) obj;
-		if (state.length != other.state.length
-				|| state[0].length != other.state[0].length)
-			return false;
-		else
-			for (int i = 0; i < state.length; ++i)
-				for (int j = 0; j < state[0].length; ++j)
-					if (state[i][j] != other.state[i][j])
-						return false;
-		return true;
+		return state.equals(other.state);
 	}
 
 	public Node getFather() {
@@ -62,11 +71,11 @@ public class Node {
 		this.father = father;
 	}
 
-	public int[][] getState() {
+	public String getState() {
 		return state;
 	}
 
-	public void setState(int[][] state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 
@@ -141,23 +150,21 @@ public class Node {
 		ArrayList<String> moves = new ArrayList<String>();
 		if (x != 0)
 			moves.add("South");
-		if (x != (state.length - 1))
+		if (x != (length - 1))
 			moves.add("North");
 		if (y != 0)
 			moves.add("East");
-		if (y != (state[0].length - 1))
+		if (y != (high - 1))
 			moves.add("West");
 		return moves;
 	}
 
 	public void pos() {
-		for (int i = 0; i < state.length; ++i)
-			for (int j = 0; j < state[0].length; ++j)
-				if (state[i][j] == 0) {
-					x = i;
-					y = j;
-					return;
-				}
+		for (int i = 0; i < state.length(); ++i)
+			if (state.charAt(i) == '0') {
+				x = i;
+				return;
+			}
 	}
 
 	public String toString() {
@@ -167,23 +174,26 @@ public class Node {
 			return father.toString() + "\n" + dispArray();
 	}
 
+	@SuppressWarnings("resource")
 	public String dispArray() {
 		String s = "";
-		for (int i = 0; i < state.length; ++i) {
-			s += state[i][0];
-			for (int j = 1; j < state[i].length; ++j) {
-				s += " " + state[i][j];
-			}
+		Scanner sc = new Scanner(state).useDelimiter(" ");
+		for (int i = 0; i < length; ++i) {
+			s += sc.nextInt();
+			for (int j = 1; j < high; ++j)
+				s += " " + sc.nextInt();
 			s += "\n";
 		}
 		return s;
 	}
 
 	public Node makeMove(String dir) {
-		int[][] res = new int[state.length][state[0].length];
-		for (int i = 0; i < res.length; ++i)
-			for (int j = 0; j < res[0].length; ++j)
-				res[i][j] = state[i][j];
+		int[][] res = toArray(state);
+		/*
+		 * new int[length][high]; Scanner sc = new Scanner(state); for (int i =
+		 * 0; i < length; ++i) for (int j = 0; j < high; ++j) { res[i][j] =
+		 * sc.nextInt(); }
+		 */
 		switch (dir) {
 		case "West":
 			res[x][y] = res[x][y + 1];
@@ -205,62 +215,51 @@ public class Node {
 	}
 
 	public boolean win() {
-		if (x != state.length - 1 && y != state[0].length - 1)
+		if (x != state.length() - 1)
 			return false;
-		else {
-			int cpt = 1;
-			for (int i = 0; i < state.length; ++i) {
-				int max;
-				if (i != state.length - 1)
-					max = state[i].length;
-				else
-					max = state[i].length - 1;
-				for (int j = 0; j < max; ++j) {
-					if (state[i][j] != cpt)
-						return false;
-					cpt++;
-				}
-			}
-			return true;
-		}
+		return state.equals(getVictory());
 	}
 
-	public int[][] getVictory() {
-		int[][] victory = new int[state.length][state[0].length];
+	public String getVictory() {
+		String victory = "";
 		int cpt = 1;
-		for (int i = 0; i < victory.length; ++i) {
-			int max = victory.length;
-			if (i == victory.length - 1)
+		for (int i = 0; i < length; ++i) {
+			int max = high;
+			if (i == length - 1)
 				max--;
 			for (int j = 0; j < max; ++j) {
-				victory[i][j] = cpt;
+				victory += cpt;
 				cpt++;
 			}
 		}
-		victory[state.length - 1][state[0].length - 1] = 0;
+		victory += 0;
 		return victory;
 	}
 
+	@SuppressWarnings("resource")
 	public void h1() {
-		int[][] victory = getVictory();
-		for (int i = 0; i < victory.length; ++i)
-			for (int j = 0; j < victory[0].length; ++j)
-				if (state[i][j] != victory[i][j])
-					h1++;
+		String victory = getVictory();
+		Scanner scState = new Scanner(state).useDelimiter(" ");
+		Scanner scVictory = new Scanner(victory).useDelimiter(" ");
+		while (scState.hasNext()) {
+			if (scState.nextInt() != scVictory.nextInt())
+				h1++;
+		}
 	}
 
 	public void h2() {
-		for (int i = 0; i < (state.length * state[0].length - 1); ++i) {
+		for (int i = 0; i < (length * high - 1); ++i) {
 			h2 += dm(i);
 		}
 	}
 
 	public int dm(int pion) {
-		int[][] victory = getVictory();
+		int[][] victory = toArray(getVictory());
+		int[][] s = toArray(state);
 		int posFX = 0, posFY = 0, posSX = 0, posSY = 0;
-		for (int i = 0; i < state.length; ++i)
-			for (int j = 0; j < state[0].length; ++j) {
-				if (state[i][j] == pion) {
+		for (int i = 0; i < s.length; ++i)
+			for (int j = 0; j < s[0].length; ++j) {
+				if (s[i][j] == pion) {
 					posSX = i;
 					posSY = j;
 				}
@@ -285,30 +284,13 @@ public class Node {
 		return g + h1 + h2;
 	}
 
-	public void place(int i, int j, int num) {
-		if (state[i][j] == 0) {
-			state[i][j] = num;
-			if (i > 0)
-				if (state[i - 1][j] == num)
-					state[i - 1][j] = 0;
-		}
-		if (j > 0)
-			if (state[i][j - 1] == num)
-				state[i][j - 1] = 0;
-		if (i < state.length)
-			if (state[i + 1][j] == num)
-				state[i + 1][j] = 0;
-		if (j < state[0].length)
-			if (state[i][j + 1] == num)
-				state[i][j + 1] = 0;
-	}
-
-	public boolean isPlaced() {
-		boolean result = true;
-		for (int i = 0; i < state.length; ++i)
-			for (int j = 0; j < state[0].length; ++j)
-				if (state[i][j] != i + j * 4)
-					result = false;
-		return result;
+	@SuppressWarnings("resource")
+	public int[][] toArray(String s) {
+		int[][] res = new int[length][high];
+		Scanner sc = new Scanner(s).useDelimiter(" ");
+		for (int i = 0; i < length; ++i)
+			for (int j = 0; j < high; ++j)
+				res[i][j] = sc.nextInt();
+		return res;
 	}
 }

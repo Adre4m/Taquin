@@ -16,12 +16,14 @@ public class GrapheTest {
 	Node test = new Node();
 	Node test2 = new Node();
 	Graphe g = new Graphe();
+	Node initial;
 
 	@Before
 	public void setUp() throws Exception {
 		Taquin t = new Taquin(Parser.read("test1.taq"));
+		initial = new Node(t.getGame());
 		// if (t.solvable())
-		g = new Graphe(t);
+		g = new Graphe(initial);
 	}
 
 	@After
@@ -32,9 +34,11 @@ public class GrapheTest {
 	public void testGrow() {
 		if (!g.isEmpty()) {
 			ArrayList<Node> next = new ArrayList<Node>();
-			next.add(g.getGraphe().iterator().next());
+			next.add(initial);
+			//Node n = g.searchBF(next);
+			//Node n = g.searchDeep(next);
 			Node n = g.searchAStar(next);
-			//System.out.println("Grahpe début :\n" + g + "Graphe fin.\n");
+			// System.out.println("Grahpe début :\n" + g + "Graphe fin.\n");
 			System.out.println("Chemin solution :\n" + n);
 			assertEquals(true, n.win());
 		} else

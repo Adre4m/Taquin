@@ -48,6 +48,7 @@ public class Graphe {
 	}
 
 	public ArrayList<Node> growAStar(Node toGrow) {
+		System.out.println(toGrow.getState());
 		ArrayList<Node> next = new ArrayList<Node>();
 		ArrayList<String> moves = toGrow.possibleMoves();
 		if (!moves.isEmpty()) {
@@ -119,66 +120,38 @@ public class Graphe {
 
 	public Node searchAStar(ArrayList<Node> o) {
 		nbMove++;
-		ArrayList<Node> f = new ArrayList<Node>();
-		while (!o.isEmpty()) {
-			Node m = selectMin(o);
-			f.add(m);
-			if (m.win())
-				return m;
+		/*
+		 * ArrayList<Node> f = new ArrayList<Node>(); while (!o.isEmpty()) {
+		 * Node m = selectMin(o); f.add(m); if (m.win()) return m; else {
+		 * ArrayList<Node> sons = growAStar(m); Iterator<Node> it =
+		 * sons.iterator(); while (it.hasNext()) { Node fi = it.next(); if
+		 * (fi.win()) return fi; else { int indexO = 0; boolean inO = false;
+		 * while (indexO < o.size() && !inO) { if (o.get(indexO).equals(fi)) inO
+		 * = true; else indexO++; } int indexF = 0; boolean inF = false; while
+		 * (indexF < f.size() && !inF) { if (f.get(indexF).equals(fi)) inF =
+		 * true; else indexF++; } if (!inO || !inF) o.add(fi); else { if (inO) {
+		 * Node k = o.get(indexO); if (k.f() >= fi.f()) { o.remove(indexO);
+		 * o.add(fi); } } if (inF) { Node k = f.get(indexF); if (k.f() >=
+		 * fi.f()) { f.remove(indexF); f.add(fi); } } } } } } }
+		 */
+
+		if (o.isEmpty())
+			return null;
+		else {
+			Iterator<Node> it = o.iterator();
+			Node n = it.next();
+			n.setProcess("reach");
+			while (it.hasNext() && !n.win()) {
+				n = it.next();
+				n.setProcess("reach");
+			}
+			if (n.win())
+				return n;
 			else {
-				ArrayList<Node> sons = growAStar(m);
-				Iterator<Node> it = sons.iterator();
-				while (it.hasNext()) {
-					Node fi = it.next();
-					if (fi.win())
-						return fi;
-					else {
-						int indexO = 0;
-						boolean inO = false;
-						while (indexO < o.size() && !inO) {
-							if (o.get(indexO).equals(fi))
-								inO = true;
-							else
-								indexO++;
-						}
-						int indexF = 0;
-						boolean inF = false;
-						while (indexF < f.size() && !inF) {
-							if (f.get(indexF).equals(fi))
-								inF = true;
-							else
-								indexF++;
-						}
-						if (!inO || !inF)
-							o.add(fi);
-						else {
-							if (inO) {
-								Node k = o.get(indexO);
-								if (k.f() >= fi.f()) {
-									o.remove(indexO);
-									o.add(fi);
-								}
-							}
-							if (inF) {
-								Node k = f.get(indexF);
-								if (k.f() >= fi.f()) {
-									f.remove(indexF);
-									f.add(fi);
-								}
-							}
-						}
-					}
-				}
+				o = growAStar(selectMin(o));
+				return searchAStar(o);
 			}
 		}
-		/*
-		 * if (next.isEmpty()) return null; else { Iterator<Node> it =
-		 * next.iterator(); Node n = it.next(); n.setProcess("reach"); while
-		 * (it.hasNext() && !n.win()) { n = it.next(); n.setProcess("reach"); }
-		 * if (n.win()) return n; else { next = grow(selectMin()); return
-		 * searchAStar(next); } }
-		 */
-		return null;
 	}
 
 	public Node searchBF(ArrayList<Node> next) {
@@ -196,7 +169,28 @@ public class Graphe {
 	}
 
 	public Node searchDeep(ArrayList<Node> next) {
+		for (Node u : graphe) {
+			if (u.getProcess().equals("unreach")) {
+				Node res = visit(u);
+				if (res.win())
+					return res;
+			}
+		}
 		return null;
+	}
+
+	public Node visit(Node u) {
+		System.out.println(u);
+		u.setProcess("reach");
+		if (u.win())
+			return u;
+		ArrayList<Node> next = growAStar(u);
+		for (Node v : next) {
+			if (v.getProcess().equals("unreach"))
+				visit(v);
+		}
+		u.setProcess("processed");
+		return u;
 	}
 
 	public Node selectMin(ArrayList<Node> o) {
