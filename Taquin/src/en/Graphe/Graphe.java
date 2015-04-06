@@ -86,7 +86,7 @@ public class Graphe {
 		else {
 			String s = "";
 			Iterator<Node> it = graphe.iterator();
-			while(it.hasNext())
+			while (it.hasNext())
 				s += it.next().toString();
 			return s;
 		}
@@ -96,7 +96,7 @@ public class Graphe {
 		return graphe.size();
 	}
 
-	public Node search(ArrayList<Node> next) {
+	public Node searchAStar(ArrayList<Node> next) {
 		nbMove++;
 		if (next.isEmpty())
 			return null;
@@ -112,7 +112,7 @@ public class Graphe {
 				return n;
 			else {
 				next = grow(selectMin());
-				return search(next);
+				return searchAStar(next);
 			}
 		}
 	}
@@ -129,11 +129,10 @@ public class Graphe {
 				if (!tmp.getProcess().equals("processed")) {
 					if (node.f() > tmp.f()) {
 						node = tmp;
-						node.setProcess("processed");
 					}
-					tmp.setProcess("processed");
 				}
 			}
+			node.setProcess("processed");
 			return node;
 		}
 	}

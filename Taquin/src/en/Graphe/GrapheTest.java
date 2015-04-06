@@ -33,7 +33,7 @@ public class GrapheTest {
 		if (!g.isEmpty()) {
 			ArrayList<Node> next = new ArrayList<Node>();
 			next.add(g.getGraphe().iterator().next());
-			Node n = g.search(next);
+			Node n = g.searchAStar(next);
 			//System.out.println("Grahpe début :\n" + g + "Graphe fin.\n");
 			System.out.println("Chemin solution :\n" + n);
 			assertEquals(true, n.win());
