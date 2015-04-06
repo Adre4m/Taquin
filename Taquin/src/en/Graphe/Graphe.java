@@ -62,6 +62,27 @@ public class Graphe {
 		}
 		return next;
 	}
+	
+	public void growBF(ArrayList<Node> toGrow) {
+		Iterator<Node> it = toGrow.iterator();
+		ArrayList<Node> toAdd = new ArrayList<Node>();
+		ArrayList<Node> toDel = new ArrayList<Node>();
+		while (it.hasNext()) {
+			Node node = it.next();
+			ArrayList<String> possibleMoves = node.possibleMoves();
+			Iterator<String> moves = possibleMoves.iterator();
+			while (moves.hasNext()) {
+				String dir = moves.next();
+				Node other = new Node(node.makeMove(dir));
+				addNode(node, other);
+				toDel.add(node);
+				toAdd.add(other);
+			}
+		}
+		toAdd.removeAll(toDel);
+		toGrow.removeAll(toDel);
+		toGrow.addAll(toAdd);
+	}
 
 	public ArrayList<Node> getGraphe() {
 		return graphe;
