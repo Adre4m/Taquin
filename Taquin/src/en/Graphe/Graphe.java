@@ -117,6 +117,20 @@ public class Graphe {
 		}
 	}
 
+	public Node searchBF(ArrayList<Node> next) {
+		nbMove++;
+		if (next == null)
+			next = new ArrayList<Node>();
+		Iterator<Node> it = next.iterator();
+		Node n = it.next();
+		while (!n.win() && it.hasNext())
+			n = it.next();
+		if (n != null && n.win())
+			return n;
+		//growBF(next);
+		return searchBF(next);
+	}
+
 	public Node selectMin() {
 		if (graphe.isEmpty())
 			return null;
