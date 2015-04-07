@@ -27,12 +27,13 @@ public class Node {
 		high = game[0].length;
 		for (int i = 0; i < game.length; ++i) {
 			int max = game[0].length;
-			if (i == game.length -1)
+			if (i == game.length - 1)
 				max--;
 			for (int j = 0; j < max; ++j)
 				state += game[i][j] + " ";
 		}
 		state += game[game.length - 1][game[0].length - 1];
+		pos();
 	}
 
 	public Node(String state) {
@@ -147,6 +148,7 @@ public class Node {
 	}
 
 	public ArrayList<String> possibleMoves() {
+		// pos();
 		ArrayList<String> moves = new ArrayList<String>();
 		if (x != 0)
 			moves.add("South");
@@ -160,28 +162,33 @@ public class Node {
 	}
 
 	public void pos() {
-		for (int i = 0; i < state.length(); ++i)
-			if (state.charAt(i) == '0') {
-				x = i;
-				return;
-			}
+		int[][] res = toArray(state);
+		for (int i = 0; i < res.length; ++i)
+			for (int j = 0; j < res[0].length; ++j)
+				if (res[i][j] == 0) {
+					x = i;
+					y = j;
+					return;
+				}
 	}
 
 	public String toString() {
 		if (father == null)
 			return dispArray();
 		else
-			return father.toString() + "\n" + dispArray();
+			return /* father.toString() + */ "\n" + dispArray();
 	}
 
-	@SuppressWarnings("resource")
 	public String dispArray() {
 		String s = "";
-		Scanner sc = new Scanner(state).useDelimiter(" ");
-		for (int i = 0; i < length; ++i) {
-			s += sc.nextInt();
-			for (int j = 1; j < high; ++j)
-				s += " " + sc.nextInt();
+		int[][] res = toArray(state);
+		for (int i = 0; i < res.length; ++i) {
+			int max = res[0].length;
+			s += res[i][0];
+			if(i == res.length - 1)
+				max--;
+			for(int j = 1; j < max; ++j)
+				s += " " + res[i][j];
 			s += "\n";
 		}
 		return s;
@@ -189,11 +196,6 @@ public class Node {
 
 	public Node makeMove(String dir) {
 		int[][] res = toArray(state);
-		/*
-		 * new int[length][high]; Scanner sc = new Scanner(state); for (int i =
-		 * 0; i < length; ++i) for (int j = 0; j < high; ++j) { res[i][j] =
-		 * sc.nextInt(); }
-		 */
 		switch (dir) {
 		case "West":
 			res[x][y] = res[x][y + 1];

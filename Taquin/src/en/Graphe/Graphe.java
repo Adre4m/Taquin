@@ -48,7 +48,6 @@ public class Graphe {
 	}
 
 	public ArrayList<Node> growAStar(Node toGrow) {
-		System.out.println(toGrow.getState());
 		ArrayList<Node> next = new ArrayList<Node>();
 		ArrayList<String> moves = toGrow.possibleMoves();
 		if (!moves.isEmpty()) {

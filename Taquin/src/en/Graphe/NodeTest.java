@@ -10,15 +10,14 @@ import org.junit.Test;
 
 public class NodeTest {
 
-	Node test = new Node();
-	Node test2 = new Node();
+	Node test;
+	Node test2;
 
 	@Before
 	public void setUp() throws Exception {
 		int[][] state = { { 1, 5, 6 }, { 2, 7, 3 }, { 4, 8, 0 } };
-		/*
-		 * test.setState(state); test2.setFather(test); test2.setState(state);
-		 */
+		test = new Node(state);
+		test2 = new Node(state);
 	}
 
 	@After
@@ -40,13 +39,10 @@ public class NodeTest {
 
 	@Test
 	public void testMove() {
-		boolean equal = true;
 		int[][] state = { { 1, 5, 6 }, { 2, 7, 0 }, { 4, 8, 3 } };
+		Node test3 = new Node(state);
 		Node res = test.makeMove("South");
-		/*
-		 * for (int i = 0; i < 3 && equal; ++i) for (int j = 0; j < 3 && equal;
-		 * ++j) if (state[i][j] != res.getState()[i][j]) equal = false;
-		 */
+		boolean equal = test3.getState().equals(res.getState());
 		assertEquals(true, equal);
 	}
 
