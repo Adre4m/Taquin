@@ -24,6 +24,7 @@ public class Node {
 		for (int i = 0; i < high; ++i)
 			for (int j = 0; j < length; ++j)
 				this.game += game[i][j] + " ";
+		pos();
 	}
 
 	public Node(Node father, int[][] game) {
@@ -37,6 +38,7 @@ public class Node {
 		for (int i = 0; i < high; ++i)
 			for (int j = 0; j < length; ++j)
 				this.game += game[i][j] + " ";
+		pos();
 	}
 
 	public String getGame() {
@@ -182,6 +184,19 @@ public class Node {
 					y = j;
 					return;
 				}
+	}
+
+	public ArrayList<String> possibleMoves() {
+		ArrayList<String> moves = new ArrayList<String>();
+		if (x != 0)
+			moves.add("South");
+		if (x != (length - 1))
+			moves.add("North");
+		if (y != 0)
+			moves.add("East");
+		if (y != (high - 1))
+			moves.add("West");
+		return moves;
 	}
 
 	public Iterator<Node> edges() {
