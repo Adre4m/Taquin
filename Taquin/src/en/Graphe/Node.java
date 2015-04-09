@@ -30,6 +30,7 @@ public class Node {
 		high = game.length;
 		length = game[0].length;
 		this.father = father;
+		this.father.getSons().add(this);
 		sons = new ArrayList<Node>();
 		state = "unreach";
 		for (int i = 0; i < high; ++i)
@@ -171,4 +172,65 @@ public class Node {
 		return victory;
 	}
 
+	public void pos() {
+		int[][] res = toArray(state);
+		for (int i = 0; i < res.length; ++i)
+			for (int j = 0; j < res[0].length; ++j)
+				if (res[i][j] == 0) {
+					x = i;
+					y = j;
+					return;
+				}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((game == null) ? 0 : game.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Node))
+			return false;
+		Node other = (Node) obj;
+		if (game == null) {
+			if (other.game != null)
+				return false;
+		} else if (!game.equals(other.game))
+			return false;
+		return true;
+	}
+
+	public int compareTo(Object obj) {
+		if (this == obj)
+			return 0;
+		if (obj instanceof Node) {
+			Node other = (Node) obj;
+			return this.f() - other.f();
+		}
+		return -1;
+	}
+
+	@Override
+	public String toString() {
+		if (father == null)
+			if (sons.isEmpty())
+				return dispArray();
+			else
+				return dispArray() + sons.toString();
+		else
+			father.toString();
+		return "Nothing to display";
+	}
+
+	public String dispArray() {
+		return "";
+	}
 }
