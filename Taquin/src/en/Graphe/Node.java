@@ -1,6 +1,7 @@
 package en.Graphe;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Node {
@@ -183,13 +184,15 @@ public class Node {
 				}
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((game == null) ? 0 : game.hashCode());
-		return result;
+	public Iterator<Node> edges() {
+		return sons.iterator();
 	}
+
+	/*
+	 * @Override public int hashCode() { final int prime = 31; int result = 1;
+	 * result = prime * result + ((game == null) ? 0 : game.hashCode()); return
+	 * result; }
+	 */
 
 	@Override
 	public boolean equals(Object obj) {
