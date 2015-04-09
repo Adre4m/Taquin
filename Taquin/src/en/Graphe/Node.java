@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class Node {
 	private Node father = null;
+	private ArrayList<Node> sons;
 	private String state = "";
 	int length;
 	int high;
@@ -20,6 +21,7 @@ public class Node {
 	public Node() {
 		state = null;
 		process = "unreach";
+		sons = new ArrayList<Node>();
 	}
 
 	public Node(int[][] game) {
@@ -33,12 +35,15 @@ public class Node {
 				state += game[i][j] + " ";
 		}
 		state += game[game.length - 1][game[0].length - 1];
+		process = "unreach";
+		sons = new ArrayList<Node>();
 		pos();
 	}
 
 	public Node(String state) {
 		this.state = state;
 		pos();
+		sons = new ArrayList<Node>();
 		process = "unreach";
 	}
 
@@ -70,6 +75,14 @@ public class Node {
 
 	public void setFather(Node father) {
 		this.father = father;
+	}
+
+	public ArrayList<Node> getSons() {
+		return sons;
+	}
+
+	public void setSons(ArrayList<Node> sons) {
+		this.sons = sons;
 	}
 
 	public String getState() {
@@ -176,19 +189,17 @@ public class Node {
 		if (father == null)
 			return dispArray();
 		else
-			return /* father.toString() + */ "\n" + dispArray();
+			return father.toString() + "\n" + dispArray();
 	}
 
+	@SuppressWarnings("resource")
 	public String dispArray() {
 		String s = "";
-		int[][] res = toArray(state);
-		for (int i = 0; i < res.length; ++i) {
-			int max = res[0].length;
-			s += res[i][0];
-			if(i == res.length - 1)
-				max--;
-			for(int j = 1; j < max; ++j)
-				s += " " + res[i][j];
+		Scanner sc = new Scanner(state).useDelimiter(" ");
+		for (int i = 0; i < length; ++i) {
+			s += sc.nextInt();
+			for (int j = 1; j < high; ++j)
+				s += " " + sc.nextInt();
 			s += "\n";
 		}
 		return s;
@@ -217,7 +228,7 @@ public class Node {
 	}
 
 	public boolean win() {
-		if (x != state.length() - 1)
+		if (x != length - 1 || y != high - 1)
 			return false;
 		return state.equals(getVictory());
 	}
@@ -230,7 +241,7 @@ public class Node {
 			if (i == length - 1)
 				max--;
 			for (int j = 0; j < max; ++j) {
-				victory += cpt;
+				victory += cpt + " ";
 				cpt++;
 			}
 		}
