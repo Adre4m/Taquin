@@ -230,7 +230,16 @@ public class Node {
 		return "Nothing to display";
 	}
 
+	@SuppressWarnings("resource")
 	public String dispArray() {
-		return "";
+		String s = "";
+		Scanner sc = new Scanner(state).useDelimiter(" ");
+		for (int i = 0; i < length; ++i) {
+			s += sc.nextInt();
+			for (int j = 1; j < high; ++j)
+				s += " " + sc.nextInt();
+			s += "\n";
+		}
+		return s;
 	}
 }
