@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import en.Game.Taquin;
+
 public class Node {
 	private String game;
 	private String state;
@@ -21,9 +23,14 @@ public class Node {
 		father = null;
 		sons = new ArrayList<Node>();
 		state = "unreach";
-		for (int i = 0; i < high; ++i)
-			for (int j = 0; j < length; ++j)
+		for (int i = 0; i < high; ++i) {
+			int max = length;
+			if (i == high - 1)
+				max--;
+			for (int j = 0; j < max; ++j)
 				this.game += game[i][j] + " ";
+		}
+		this.game += game[game.length - 1][game[0].length - 1];
 		pos();
 	}
 
@@ -35,9 +42,33 @@ public class Node {
 		this.father.getSons().add(this);
 		sons = new ArrayList<Node>();
 		state = "unreach";
-		for (int i = 0; i < high; ++i)
-			for (int j = 0; j < length; ++j)
+		for (int i = 0; i < high; ++i) {
+			int max = length;
+			if (i == high - 1)
+				max--;
+			for (int j = 0; j < max; ++j)
 				this.game += game[i][j] + " ";
+		}
+		this.game += game[game.length - 1][game[0].length - 1];
+		pos();
+	}
+
+	public Node(Taquin t) {
+		this.game = "";
+		int[][] game = t.getGame();
+		high = game.length;
+		length = game[0].length;
+		this.father = null;
+		sons = new ArrayList<Node>();
+		state = "unreach";
+		for (int i = 0; i < high; ++i) {
+			int max = length;
+			if (i == high - 1)
+				max--;
+			for (int j = 0; j < max; ++j)
+				this.game += game[i][j] + " ";
+		}
+		this.game += game[game.length - 1][game[0].length - 1];
 		pos();
 	}
 
@@ -93,7 +124,7 @@ public class Node {
 	public int h1() {
 		int h1 = 0;
 		String victory = getVictory();
-		Scanner scState = new Scanner(state).useDelimiter(" ");
+		Scanner scState = new Scanner(game).useDelimiter(" ");
 		Scanner scVictory = new Scanner(victory).useDelimiter(" ");
 		while (scState.hasNext()) {
 			if (scState.nextInt() != scVictory.nextInt())
@@ -112,7 +143,7 @@ public class Node {
 
 	public int dm(int pion) {
 		int[][] victory = toArray(getVictory());
-		int[][] s = toArray(state);
+		int[][] s = toArray(game);
 		int posFX = 0, posFY = 0, posSX = 0, posSY = 0;
 		for (int i = 0; i < s.length; ++i)
 			for (int j = 0; j < s[0].length; ++j) {
@@ -130,16 +161,12 @@ public class Node {
 
 	public int g() {
 		int g = 0;
-		if (father != null) {
-			g += father.g();
-		}
+		if (father != null)
+			g += father.g() + 1;
 		return g;
 	}
 
 	public int f() {
-		g();
-		h1();
-		h2();
 		return g() + h1() + h2();
 	}
 
@@ -154,9 +181,7 @@ public class Node {
 	}
 
 	public boolean win() {
-		if (x != length - 1 || y != high - 1)
-			return false;
-		return state.equals(getVictory());
+		return game.equals(getVictory());
 	}
 
 	public String getVictory() {
@@ -175,8 +200,12 @@ public class Node {
 		return victory;
 	}
 
+	public void add(Node son) {
+		sons.add(son);
+	}
+
 	public void pos() {
-		int[][] res = toArray(state);
+		int[][] res = toArray(game);
 		for (int i = 0; i < res.length; ++i)
 			for (int j = 0; j < res[0].length; ++j)
 				if (res[i][j] == 0) {
@@ -197,6 +226,28 @@ public class Node {
 		if (y != (high - 1))
 			moves.add("West");
 		return moves;
+	}
+
+	public Node makeMove(String dir) {
+		int[][] res = toArray(game);
+		switch (dir) {
+		case "West":
+			res[x][y] = res[x][y + 1];
+			res[x][y + 1] = 0;
+			break;
+		case "East":
+			res[x][y] = res[x][y - 1];
+			res[x][y - 1] = 0;
+			break;
+		case "North":
+			res[x][y] = res[x + 1][y];
+			res[x + 1][y] = 0;
+			break;
+		case "South":
+			res[x][y] = res[x - 1][y];
+			res[x - 1][y] = 0;
+		}
+		return new Node(res);
 	}
 
 	public Iterator<Node> edges() {
@@ -227,8 +278,6 @@ public class Node {
 	}
 
 	public int compareTo(Object obj) {
-		if (this == obj)
-			return 0;
 		if (obj instanceof Node) {
 			Node other = (Node) obj;
 			return this.f() - other.f();
@@ -238,20 +287,16 @@ public class Node {
 
 	@Override
 	public String toString() {
-		if (father == null)
-			if (sons.isEmpty())
-				return dispArray();
-			else
-				return dispArray() + sons.toString();
-		else
-			father.toString();
-		return "Nothing to display";
+		if (father == null) {
+			return dispArray();
+		} else
+			return father.toString() + "\n" + dispArray();
 	}
 
 	@SuppressWarnings("resource")
 	public String dispArray() {
 		String s = "";
-		Scanner sc = new Scanner(state).useDelimiter(" ");
+		Scanner sc = new Scanner(game).useDelimiter(" ");
 		for (int i = 0; i < length; ++i) {
 			s += sc.nextInt();
 			for (int j = 1; j < high; ++j)
