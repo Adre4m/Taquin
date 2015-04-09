@@ -1,6 +1,7 @@
 package en.Graphe;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Node {
 	private String game;
@@ -80,6 +81,70 @@ public class Node {
 
 	public void setLength(int length) {
 		this.length = length;
+	}
+
+	@SuppressWarnings("resource")
+	public int h1() {
+		int h1 = 0;
+		String victory = getVictory();
+		Scanner scState = new Scanner(state).useDelimiter(" ");
+		Scanner scVictory = new Scanner(victory).useDelimiter(" ");
+		while (scState.hasNext()) {
+			if (scState.nextInt() != scVictory.nextInt())
+				h1++;
+		}
+		return h1;
+	}
+
+	public int h2() {
+		int h2 = 0;
+		for (int i = 0; i < (length * high - 1); ++i) {
+			h2 += dm(i);
+		}
+		return h2;
+	}
+
+	public int dm(int pion) {
+		int[][] victory = toArray(getVictory());
+		int[][] s = toArray(state);
+		int posFX = 0, posFY = 0, posSX = 0, posSY = 0;
+		for (int i = 0; i < s.length; ++i)
+			for (int j = 0; j < s[0].length; ++j) {
+				if (s[i][j] == pion) {
+					posSX = i;
+					posSY = j;
+				}
+				if (victory[i][j] == pion) {
+					posFX = i;
+					posFY = j;
+				}
+			}
+		return Math.abs(posFX - posSX) + Math.abs(posFY - posSY);
+	}
+
+	public int g() {
+		int g = 0;
+		if (father != null) {
+			g += father.g();
+		}
+		return g;
+	}
+
+	public int f() {
+		g();
+		h1();
+		h2();
+		return g() + h1() + h2();
+	}
+
+	@SuppressWarnings("resource")
+	public int[][] toArray(String s) {
+		int[][] res = new int[length][high];
+		Scanner sc = new Scanner(s).useDelimiter(" ");
+		for (int i = 0; i < length; ++i)
+			for (int j = 0; j < high; ++j)
+				res[i][j] = sc.nextInt();
+		return res;
 	}
 
 }
