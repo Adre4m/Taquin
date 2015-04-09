@@ -10,6 +10,8 @@ public class Node {
 	private ArrayList<Node> sons;
 	private int high;
 	private int length;
+	int x;
+	int y;
 
 	public Node(int[][] game) {
 		this.game = "";
@@ -145,6 +147,28 @@ public class Node {
 			for (int j = 0; j < high; ++j)
 				res[i][j] = sc.nextInt();
 		return res;
+	}
+
+	public boolean win() {
+		if (x != length - 1 || y != high - 1)
+			return false;
+		return state.equals(getVictory());
+	}
+
+	public String getVictory() {
+		String victory = "";
+		int cpt = 1;
+		for (int i = 0; i < length; ++i) {
+			int max = high;
+			if (i == length - 1)
+				max--;
+			for (int j = 0; j < max; ++j) {
+				victory += cpt + " ";
+				cpt++;
+			}
+		}
+		victory += 0;
+		return victory;
 	}
 
 }
