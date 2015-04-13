@@ -11,14 +11,16 @@ import en.Parser.Parser;
 
 public class GrapheTest {
 
-	Graphe g;
+	Graphe gBF;
+	Graphe gD;
 	Node initial;
 
 	@Before
 	public void setUp() throws Exception {
 		Taquin t = new Taquin(Parser.read("test.taq"));
 		initial = new Node(t);
-		g = new Graphe(initial);
+		gBF = new Graphe(initial);
+		gD = new Graphe(initial);
 	}
 
 	@After
@@ -26,15 +28,24 @@ public class GrapheTest {
 	}
 
 	@Test
-	public void test() {
-		Node res = g.deepSearch();
+	public void testDeep() {
+		Node res = gD.deepSearch();
 		if (res != null) {
 			System.out.println(res);
 			assertEquals(true, res.win());
-		}
-		else
+		} else
 			assertEquals(false, true);
 
+	}
+
+	@Test
+	public void testBF() {
+		Node res = gBF.searchBF();
+		if (res != null) {
+			System.out.println(res);
+			assertEquals(true, res.win());
+		} else
+			assertEquals(false, true);
 	}
 
 }

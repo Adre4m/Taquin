@@ -67,12 +67,10 @@ public class Graphe {
 	}
 
 	public Node deepSearch() {
-		if (!nodes.isEmpty()) {
-			Node res = deepSearch(nodes.get(0));
-			if (res != null && res.win())
-				return res;
-		}
-		return null;
+		if (!nodes.isEmpty())
+			return deepSearch(nodes.get(0));
+		else
+			return null;
 	}
 
 	private Node deepSearch(Node start) {
@@ -80,39 +78,36 @@ public class Graphe {
 	}
 
 	public Node searchBF() {
-		if (!nodes.isEmpty()) {
-			Node res = searchBF(nodes);
-			if (res != null && res.win())
-				return searchBF(nodes);
-		}
-		return null;
+		return searchBF(nodes);
 	}
 
 	private Node searchBF(ArrayList<Node> next) {
 		nbMove++;
+		Collections.sort(next, new NodeComparator());
 		if (next == null)
 			next = new ArrayList<Node>();
 		Iterator<Node> it = next.iterator();
 		Node n = it.next();
-		while (it.hasNext() && !n.win())
+		while (!n.win() && it.hasNext())
 			n = it.next();
 		if (n != null && n.win())
 			return n;
-		growBF(next);
-		return searchBF(next);
+		return searchBF(growBF(next));
 	}
 
 	public Node searchAStar() {
-		if (!nodes.isEmpty()) {
-			Node res = searchAStar(nodes.get(0));
-			if (res != null && res.win())
-				return res;
-		}
-		return null;
+		return searchAStar(nodes);
 	}
 
-	private Node searchAStar(Node u) {
-		return null;
+	private Node searchAStar(ArrayList<Node> o) {
+		if (o.isEmpty())
+			return null;
+		else {
+			Node n = selectMin(o);
+			if(n.win())
+				return n;
+			return null;
+		}
 	}
 
 	private ArrayList<Node> grow(Node toGrow) {
@@ -127,25 +122,11 @@ public class Graphe {
 		return toCheck;
 	}
 
-	private void growBF(ArrayList<Node> toGrow) {
-		Iterator<Node> it = toGrow.iterator();
-		ArrayList<Node> toAdd = new ArrayList<Node>();
-		ArrayList<Node> toDel = new ArrayList<Node>();
-		while (it.hasNext()) {
-			Node node = it.next();
-			ArrayList<String> possibleMoves = node.possibleMoves();
-			Iterator<String> moves = possibleMoves.iterator();
-			while (moves.hasNext()) {
-				String dir = moves.next();
-				Node other = node.makeMove(dir);
-				add(node, other);
-				toDel.add(node);
-				toAdd.add(other);
-			}
-		}
-		toAdd.removeAll(toDel);
-		toGrow.removeAll(toDel);
-		toGrow.addAll(toAdd);
+	private ArrayList<Node> growBF(ArrayList<Node> toGrow) {
+		ArrayList<Node> toCheck = new ArrayList<Node>();
+		for (int i = 0; i < toGrow.size(); ++i)
+			toCheck.addAll(grow(toGrow.get(i)));
+		return toCheck;
 	}
 
 	private Node visit(Node u) {
@@ -172,7 +153,7 @@ public class Graphe {
 		return u;
 	}
 
-	public Node selectMin(ArrayList<Node> toCheck) {
+	private Node selectMin(ArrayList<Node> toCheck) {
 		Collections.sort(toCheck, new NodeComparator());
 		return toCheck.get(0);
 	}
