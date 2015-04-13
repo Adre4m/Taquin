@@ -102,6 +102,19 @@ public class Graphe {
 		return searchBF(next);
 	}
 
+	public Node searchAStar() {
+		if (!nodes.isEmpty()) {
+			Node res = searchAStar(nodes.get(0));
+			if (res != null && res.win())
+				return res;
+		}
+		return null;
+	}
+
+	private Node searchAStar(Node u) {
+		return null;
+	}
+
 	private ArrayList<Node> grow(Node toGrow) {
 		ArrayList<Node> toCheck = new ArrayList<Node>();
 		ArrayList<String> moves = toGrow.possibleMoves();
