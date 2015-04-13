@@ -57,8 +57,9 @@ public class Graphe {
 	public boolean add(Node father, Node son) {
 		if (!contains(son)) {
 			son.setFather(father);
-			/*if (father != null)
-				father.add(son);*/
+			/*
+			 * if (father != null) father.add(son);
+			 */
 			nodes.add(son);
 			return true;
 		}
@@ -135,6 +136,12 @@ public class Graphe {
 	}
 
 	private Node visit(Node u) {
+		nbMove++;
+		if (nbMove % 10 == 0) {
+			ArrayList<Node> newNodes = new ArrayList<Node>();
+			newNodes.add(u);
+			this.setNodes(newNodes);
+		}
 		if (u.win())
 			return u;
 		u.setState("reach");
