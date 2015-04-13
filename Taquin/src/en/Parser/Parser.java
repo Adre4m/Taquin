@@ -12,7 +12,7 @@ public class Parser {
 		Scanner scanner = new Scanner(file).useDelimiter(",");
 		int largeur = scanner.nextInt();
 		int hauteur = scanner.nextInt();
-		int[][] taquin = new int[largeur][hauteur];
+		int[][] taquin = new int[hauteur][largeur];
 		for (int colonne = 0; colonne < hauteur; colonne++)
 			for (int ligne = 0; ligne < largeur; ligne++) {
 				taquin[colonne][ligne] = scanner.nextInt();

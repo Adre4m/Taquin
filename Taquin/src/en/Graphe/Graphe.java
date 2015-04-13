@@ -104,9 +104,9 @@ public class Graphe {
 			return null;
 		else {
 			Node n = selectMin(o);
-			if(n.win())
+			if (n.win())
 				return n;
-			return null;
+			return searchAStar(grow(n));
 		}
 	}
 

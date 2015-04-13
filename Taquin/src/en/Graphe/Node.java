@@ -38,8 +38,6 @@ public class Node {
 		high = game.length;
 		length = game[0].length;
 		this.father = father;
-		// this.father.getSons().add(this);
-		// sons = new ArrayList<Node>();
 		state = "unreach";
 		for (int i = 0; i < high; ++i) {
 			int max = length;
@@ -58,7 +56,6 @@ public class Node {
 		high = game.length;
 		length = game[0].length;
 		this.father = null;
-		// sons = new ArrayList<Node>();
 		state = "unreach";
 		for (int i = 0; i < high; ++i) {
 			int max = length;
@@ -94,14 +91,6 @@ public class Node {
 	public void setFather(Node father) {
 		this.father = father;
 	}
-
-	/*
-	 * public ArrayList<Node> getSons() { return sons; }
-	 */
-
-	/*
-	 * public void setSons(ArrayList<Node> sons) { this.sons = sons; }
-	 */
 
 	public int getHigh() {
 		return high;
