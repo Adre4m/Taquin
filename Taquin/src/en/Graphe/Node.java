@@ -1,7 +1,6 @@
 package en.Graphe;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
 
 import en.Game.Taquin;
@@ -10,7 +9,7 @@ public class Node {
 	private String game;
 	private String state;
 	private Node father;
-	private ArrayList<Node> sons;
+	// private ArrayList<Node> sons;
 	private int high;
 	private int length;
 	int x;
@@ -21,7 +20,7 @@ public class Node {
 		high = game.length;
 		length = game[0].length;
 		father = null;
-		sons = new ArrayList<Node>();
+		// sons = new ArrayList<Node>();
 		state = "unreach";
 		for (int i = 0; i < high; ++i) {
 			int max = length;
@@ -39,8 +38,8 @@ public class Node {
 		high = game.length;
 		length = game[0].length;
 		this.father = father;
-		this.father.getSons().add(this);
-		sons = new ArrayList<Node>();
+		// this.father.getSons().add(this);
+		// sons = new ArrayList<Node>();
 		state = "unreach";
 		for (int i = 0; i < high; ++i) {
 			int max = length;
@@ -59,7 +58,7 @@ public class Node {
 		high = game.length;
 		length = game[0].length;
 		this.father = null;
-		sons = new ArrayList<Node>();
+		// sons = new ArrayList<Node>();
 		state = "unreach";
 		for (int i = 0; i < high; ++i) {
 			int max = length;
@@ -96,13 +95,13 @@ public class Node {
 		this.father = father;
 	}
 
-	public ArrayList<Node> getSons() {
-		return sons;
-	}
+	/*
+	 * public ArrayList<Node> getSons() { return sons; }
+	 */
 
-	public void setSons(ArrayList<Node> sons) {
-		this.sons = sons;
-	}
+	/*
+	 * public void setSons(ArrayList<Node> sons) { this.sons = sons; }
+	 */
 
 	public int getHigh() {
 		return high;
@@ -200,9 +199,9 @@ public class Node {
 		return victory;
 	}
 
-	public void add(Node son) {
-		sons.add(son);
-	}
+	/*
+	 * public void add(Node son) { sons.add(son); }
+	 */
 
 	public void pos() {
 		int[][] res = toArray(game);
@@ -250,9 +249,9 @@ public class Node {
 		return new Node(res);
 	}
 
-	public Iterator<Node> edges() {
-		return sons.iterator();
-	}
+	/*
+	 * public Iterator<Node> edges() { return sons.iterator(); }
+	 */
 
 	/*
 	 * @Override public int hashCode() { final int prime = 31; int result = 1;

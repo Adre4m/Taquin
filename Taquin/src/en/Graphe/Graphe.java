@@ -17,6 +17,8 @@ public class Graphe {
 
 	private ArrayList<Node> nodes;
 
+	int nbMove = -1;
+
 	public Graphe(Node initial) {
 		nodes = new ArrayList<Node>();
 		nodes.add(initial);
@@ -55,10 +57,9 @@ public class Graphe {
 	public boolean add(Node father, Node son) {
 		if (!contains(son)) {
 			son.setFather(father);
-			if (father != null)
-				father.add(son);
+			/*if (father != null)
+				father.add(son);*/
 			nodes.add(son);
-			son.setFather(father);
 			return true;
 		}
 		return false;
@@ -75,6 +76,29 @@ public class Graphe {
 
 	private Node deepSearch(Node start) {
 		return visit(start);
+	}
+
+	public Node searchBF() {
+		if (!nodes.isEmpty()) {
+			Node res = searchBF(nodes);
+			if (res != null && res.win())
+				return searchBF(nodes);
+		}
+		return null;
+	}
+
+	private Node searchBF(ArrayList<Node> next) {
+		nbMove++;
+		if (next == null)
+			next = new ArrayList<Node>();
+		Iterator<Node> it = next.iterator();
+		Node n = it.next();
+		while (it.hasNext() && !n.win())
+			n = it.next();
+		if (n != null && n.win())
+			return n;
+		growBF(next);
+		return searchBF(next);
 	}
 
 	private ArrayList<Node> grow(Node toGrow) {
