@@ -6,6 +6,15 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 public class Graphe {
+
+	private class NodeComparator implements Comparator<Node> {
+
+		@Override
+		public int compare(Node o1, Node o2) {
+			return o1.compareTo(o2);
+		}
+	}
+
 	private ArrayList<Node> nodes;
 
 	public Graphe(Node initial) {
@@ -80,19 +89,32 @@ public class Graphe {
 		return toCheck;
 	}
 
+	private void growBF(ArrayList<Node> toGrow) {
+		Iterator<Node> it = toGrow.iterator();
+		ArrayList<Node> toAdd = new ArrayList<Node>();
+		ArrayList<Node> toDel = new ArrayList<Node>();
+		while (it.hasNext()) {
+			Node node = it.next();
+			ArrayList<String> possibleMoves = node.possibleMoves();
+			Iterator<String> moves = possibleMoves.iterator();
+			while (moves.hasNext()) {
+				String dir = moves.next();
+				Node other = node.makeMove(dir);
+				add(node, other);
+				toDel.add(node);
+				toAdd.add(other);
+			}
+		}
+		toAdd.removeAll(toDel);
+		toGrow.removeAll(toDel);
+		toGrow.addAll(toAdd);
+	}
+
 	private Node visit(Node u) {
 		if (u.win())
 			return u;
 		u.setState("reach");
 		ArrayList<Node> next = grow(u);
-		class NodeComparator implements Comparator<Node> {
-
-			@Override
-			public int compare(Node o1, Node o2) {
-				return o1.compareTo(o2);
-			}
-
-		}
 		Collections.sort(next, new NodeComparator());
 		Iterator<Node> it = next.iterator();
 		while (it.hasNext()) {
@@ -107,7 +129,8 @@ public class Graphe {
 	}
 
 	public Node selectMin(ArrayList<Node> toCheck) {
-		return null;
+		Collections.sort(toCheck, new NodeComparator());
+		return toCheck.get(0);
 	}
 
 	@Override
