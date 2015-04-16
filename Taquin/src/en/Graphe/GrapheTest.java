@@ -18,7 +18,7 @@ public class GrapheTest {
 
 	@Before
 	public void setUp() throws Exception {
-		Taquin t = new Taquin(Parser.read("testRect.taq"));
+		Taquin t = new Taquin(Parser.read("test.taq"));
 		initial = new Node(t);
 		gBF = new Graphe(initial);
 		gD = new Graphe(initial);
