@@ -20,18 +20,23 @@ public class Graphe {
 	}
 
 	public Node search() {
-		if (!toDo.isEmpty()) {
-			do {
-				Node n = toDo.iterator().next();
-				toDo.remove(n);
-				if (!signed.containsKey(n.getGame()))
-					signed.put(n.getGame(), n);
-				if (n.win())
-					return n;
-				else
-					toDo.addAll(grow(n));
-			} while (!toDo.isEmpty());
-		}
+		if (toDo.isEmpty())
+			toDo.add(new Node(game));
+		do {
+			// TODO -> Coder nos propres List. Remplacer iterator().next()
+			// par juste next(), et retirer toDo.remove(n);
+			Node n = toDo.iterator().next();
+			toDo.remove(n);
+			// En théorie il n'y a pas besoin de cette condition
+			// puisque vérifié dans grow.
+			/*
+			 * if (!signed.containsKey(n.getGame())) signed.put(n.getGame(), n);
+			 */
+			if (n.win())
+				return n;
+			else
+				toDo.addAll(grow(n));
+		} while (!toDo.isEmpty());
 		return null;
 	}
 
@@ -39,8 +44,15 @@ public class Graphe {
 		ArrayList<String> dir = n.possibleMoves();
 		Iterator<String> it = dir.iterator();
 		ArrayList<Node> res = new ArrayList<Node>();
-		while (it.hasNext())
-			res.add(n.makeMove(it.next()));
+		while (it.hasNext()) {
+			Node toAdd = n.makeMove(it.next());
+			if (!signed.containsKey(toAdd.getGame()))
+				res.add(toAdd);
+			else if (toAdd.f() > signed.get(toAdd.getGame()).f()) {
+				signed.remove(toAdd.getGame());
+				res.add(toAdd);
+			}
+		}
 		return res;
 	}
 }
