@@ -1,12 +1,16 @@
 package en.List;
 
-import java.util.Collection;
-
 import en.Graphe.Node;
 
-public interface List extends Collection<Node> {
+public interface List {
 
 	public Node next();
 
+	public boolean addAll(List l);
+
 	public boolean add(Node n);
+
+	public boolean isEmpty();
+
+	public String toString();
 }

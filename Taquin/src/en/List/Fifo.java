@@ -2,9 +2,10 @@ package en.List;
 
 import en.Graphe.Node;
 
-public class Stack implements List {
+public class Fifo implements List {
 
 	private Maillon first;
+	private Maillon last;
 
 	@Override
 	public boolean addAll(List l) {
@@ -20,20 +21,32 @@ public class Stack implements List {
 
 	@Override
 	public Node next() {
-		if (isEmpty())
+		if (isEmpty()) {
 			return null;
-		else {
-			Node res = first.getInfo();
+		} else {
+			Node n = first.getInfo();
 			first = first.getNext();
-			return res;
+			return n;
+			// }
 		}
 	}
 
 	@Override
 	public boolean add(Node n) {
-		Maillon other = new Maillon(n, first);
-		first = other;
-		return true;
+		Maillon m = new Maillon(n);
+		if (isEmpty()) {
+			first = m;
+			last = new Maillon();
+			first.setNext(last);
+			return true;
+		} else if (last.getInfo() == null) {
+			last.setInfo(n);
+			return true;
+		} else {
+			last.setNext(m);
+			last = m;
+			return true;
+		}
 	}
 
 	public Maillon getFirst() {

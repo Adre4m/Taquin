@@ -1,19 +1,20 @@
 package en.Graphe;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
 import en.Game.Taquin;
+import en.List.List;
+import en.List.Tas;
 
 public class Graphe {
 
 	Taquin game;
-	Collection<Node> toDo;
+	List toDo;
 	Map<String, Node> signed;
 
-	public Graphe(Taquin game, Collection<Node> toDo, Map<String, Node> signed) {
+	public Graphe(Taquin game, List toDo, Map<String, Node> signed) {
 		this.game = game;
 		this.toDo = toDo;
 		this.signed = signed;
@@ -23,15 +24,7 @@ public class Graphe {
 		if (toDo.isEmpty())
 			toDo.add(new Node(game));
 		do {
-			// TODO -> Coder nos propres List. Remplacer iterator().next()
-			// par juste next(), et retirer toDo.remove(n);
-			Node n = toDo.iterator().next();
-			toDo.remove(n);
-			// En théorie il n'y a pas besoin de cette condition
-			// puisque vérifié dans grow.
-			/*
-			 * if (!signed.containsKey(n.getGame())) signed.put(n.getGame(), n);
-			 */
+			Node n = toDo.next();
 			if (n.win())
 				return n;
 			else
@@ -40,12 +33,13 @@ public class Graphe {
 		return null;
 	}
 
-	public Collection<Node> grow(Node n) {
+	public List grow(Node n) {
 		ArrayList<String> dir = n.possibleMoves();
 		Iterator<String> it = dir.iterator();
-		ArrayList<Node> res = new ArrayList<Node>();
+		List res = new Tas();
 		while (it.hasNext()) {
 			Node toAdd = n.makeMove(it.next());
+			toAdd.setFather(n);
 			if (!signed.containsKey(toAdd.getGame()))
 				res.add(toAdd);
 			else if (toAdd.f() > signed.get(toAdd.getGame()).f()) {

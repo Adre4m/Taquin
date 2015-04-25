@@ -7,6 +7,11 @@ public class Maillon {
 	private Node info;
 	private Maillon next;
 
+	public Maillon() {
+		info = null;
+		next = null;
+	}
+
 	public Maillon(Node info) {
 		this.info = info;
 		next = null;
@@ -31,6 +36,18 @@ public class Maillon {
 
 	public void setNext(Maillon next) {
 		this.next = next;
+	}
+
+	public String toString() {
+		return toString(this);
+	}
+
+	private String toString(Maillon m) {
+		if (m == null)
+			return "";
+		else {
+			return m.info + "\n" + toString(m.getNext());
+		}
 	}
 
 }

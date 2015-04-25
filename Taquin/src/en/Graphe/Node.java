@@ -233,6 +233,20 @@ public class Node {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((father == null) ? 0 : father.hashCode());
+		result = prime * result + ((game == null) ? 0 : game.hashCode());
+		result = prime * result + high;
+		result = prime * result + length;
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
