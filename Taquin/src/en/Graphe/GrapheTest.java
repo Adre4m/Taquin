@@ -32,7 +32,7 @@ public class GrapheTest {
 
 	@Test
 	public void test() {
-		Node n = g.search();
+		Node n = g.search(1);
 		System.out.println(n);
 		assertEquals(true, n.win());
 	}

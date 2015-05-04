@@ -2,10 +2,29 @@ package en.List;
 
 import en.Graphe.Node;
 
+/**
+ * <h2></h2>
+ * 
+ * @author
+ *
+ */
+
 public class Tas implements List {
 
 	private Maillon first;
 
+	/**
+	 * <h2>Ajout d'une liste complette a this</h2>
+	 * 
+	 * @author
+	 * @param l
+	 *            la liste a ajouter
+	 * 
+	 *            {@code}
+	 *            <p>
+	 *            Va ajouter successivement les elements de la liste l a this.
+	 *            </p>
+	 */
 	@Override
 	public boolean addAll(List l) {
 		while (!l.isEmpty())
@@ -13,11 +32,27 @@ public class Tas implements List {
 		return false;
 	}
 
+	/**
+	 * <h2>isEmpty</h2>
+	 * 
+	 * @author
+	 * @return true si la liste est vide, false sinon
+	 */
 	@Override
 	public boolean isEmpty() {
 		return first == null;
 	}
 
+	/**
+	 * <h2>Prochain element du tas</h2>
+	 * 
+	 * @author
+	 * @return le noeud en tete {@code}
+	 *         <p>
+	 *         Cette methode va non seulement renvoyer le noeud en tete, mais
+	 *         egalement supprmier celle ci de la liste.
+	 *         </p>
+	 */
 	@Override
 	public Node next() {
 		if (isEmpty())
@@ -29,6 +64,17 @@ public class Tas implements List {
 		}
 	}
 
+	/**
+	 * <h2>Methode d'ajout d'un noeud</h2>
+	 * 
+	 * @author
+	 * 
+	 *         {@code}
+	 *         <p>
+	 *         Va ajouter un element a sa position, gardant la liste this
+	 *         toujours triee.
+	 *         </p>
+	 */
 	@Override
 	public boolean add(Node n) {
 		if (isEmpty()) {
@@ -55,6 +101,11 @@ public class Tas implements List {
 		}
 	}
 
+	/**
+	 * <h2>Methode toString</h2>
+	 * 
+	 * @author
+	 */
 	public String toString() {
 		return first.toString();
 	}

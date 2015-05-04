@@ -1,11 +1,26 @@
 package en.Game;
 
+/**
+ * <h2></h2>
+ * 
+ * @author Adrien Bourgeois, Lindsay Grignon, Antoine LeHenaff, Alexandre Samoes
+ *
+ */
+
 public class Taquin {
 
 	private int[][] game = {};
 	private int posX;
 	private int posY;
 
+	/**
+	 * <h2>Initialisation du jeu.</h2>
+	 * 
+	 * @author
+	 * @param game
+	 *            La position initiale du jeu.
+	 * 
+	 */
 	public Taquin(int[][] game) {
 		this.game = game;
 		position();
@@ -35,7 +50,14 @@ public class Taquin {
 		this.posY = posY;
 	}
 
-	public String disp() {
+	/**
+	 * <h2>Affichage du jeu</h2>
+	 * 
+	 * @author
+	 * @return Un affichage propre du jeu a la position actuelle.
+	 * 
+	 */
+	public String toString() {
 		String s = "";
 		for (int i = 0; i < game.length; ++i) {
 			s += game[i][0];
@@ -47,6 +69,20 @@ public class Taquin {
 		return s;
 	}
 
+	/**
+	 * <h2>Verification de la victoire</h2>
+	 * 
+	 * @author
+	 * @return Un boolean, true si la position actuelle est gagnante, false
+	 *         sinon.
+	 * 
+	 *         {@code}
+	 *         <p>
+	 *         Cette fonction va parcourir le jeu, et verifier si la position
+	 *         est gagante.
+	 *         </p>
+	 * 
+	 */
 	public boolean win() {
 		if (posX != game.length - 1 && posY != game[0].length - 1)
 			return false;
@@ -68,6 +104,17 @@ public class Taquin {
 		}
 	}
 
+	/**
+	 * <h2>Position du zero dans le jeu</h2>
+	 * 
+	 * @author
+	 * 
+	 *         {@code}
+	 *         <p>
+	 *         Cette methode va parcourir le jeu, jusqu'a trouver le zéro.
+	 *         </p>
+	 * 
+	 */
 	public void position() {
 		for (int i = 0; i < game.length; ++i)
 			for (int j = 0; j < game[i].length; ++j)
@@ -78,6 +125,19 @@ public class Taquin {
 				}
 	}
 
+	/**
+	 * <h2>Action de jeu</h2>
+	 * 
+	 * @author
+	 * @param dir
+	 *            La direction choisie par le joueur.
+	 * 
+	 *            {@code}
+	 *            <p>
+	 *            Cette methode va modifier le jeu si c'est possible.
+	 *            </p>
+	 * 
+	 */
 	public void play(String dir) {
 		switch (dir) {
 		case "2":
@@ -105,9 +165,22 @@ public class Taquin {
 			}
 			break;
 		}
-		System.out.println("TaquinPasDirectionException");
 	}
 
+	/**
+	 * <h2>Echange deux valeurs</h2>
+	 * 
+	 * @author
+	 * @param dir
+	 *            La direction desiree par le joueur.
+	 * 
+	 *            {@code}
+	 *            <p>
+	 *            Si possible, la methode va echanger la valeur designee par la
+	 *            direction avec zero.
+	 *            </p>
+	 * 
+	 */
 	public void exchange(String dir) {
 		switch (dir) {
 		case "2":
@@ -133,6 +206,20 @@ public class Taquin {
 		}
 	}
 
+	/**
+	 * <h2>Verification de la solvabilite</h2>
+	 * 
+	 * @author
+	 * @return true si le jeu est estime solvable, false sinon.
+	 * 
+	 *         {@code}
+	 *         <p>
+	 *         Attention, la verification de la solvabilite n'est aps absolue.
+	 *         En effet la verification n'est pas exacte dans tout les cas.
+	 *         Cependant cela reste utile de l'utiliser.
+	 *         </p>
+	 * 
+	 */
 	public boolean solvable() {
 		int[] t = new int[game.length * game[0].length];
 		int cpt = 0;
@@ -144,6 +231,19 @@ public class Taquin {
 		return (mov0() % 2) == (triInsert(t) % 2);
 	}
 
+	/**
+	 * <h2>Tri</h2>
+	 * 
+	 * @author
+	 * @param tab
+	 *            la valeur du jeu mis en tableau simple dimension.
+	 * @return le tableau trier.
+	 * 
+	 *         {@code}
+	 *         <p>
+	 *         Tri par insertion.
+	 *         </p>
+	 */
 	public int triInsert(int[] tab) {
 		// tri
 		int nbEchange = 0;
@@ -166,6 +266,13 @@ public class Taquin {
 		return nbEchange;
 	}
 
+	/**
+	 * <h2>Nombre de mouvement de zero</h2>
+	 * 
+	 * @author
+	 * @return le nombre de mouvement necessaire pour amener le zero a sa bonne
+	 *         place.
+	 */
 	public int mov0() {
 		return (game.length - 1 - posX) + (game[0].length - 1 - posY);
 	}

@@ -5,6 +5,12 @@ import java.util.Scanner;
 
 import en.Game.Taquin;
 
+/**
+ * <h2>Noeud</h2>
+ * 
+ * @author
+ *
+ */
 public class Node {
 	private String game;
 	private String state;
@@ -14,6 +20,14 @@ public class Node {
 	int x;
 	int y;
 
+	/**
+	 * <h2>Initalisation d'un noeud</h2>
+	 * 
+	 * @author
+	 * @param game
+	 *            l'etat du jeu
+	 * 
+	 */
 	public Node(int[][] game) {
 		this.game = "";
 		high = game.length;
@@ -31,6 +45,16 @@ public class Node {
 		pos();
 	}
 
+	/**
+	 * <h2>Initialisation d'un noeud avec un pere defini</h2>
+	 * 
+	 * @author
+	 * @param father
+	 *            le pere
+	 * @param game
+	 *            l'etat du jeu
+	 * 
+	 */
 	public Node(Node father, int[][] game) {
 		this.game = "";
 		high = game.length;
@@ -48,6 +72,14 @@ public class Node {
 		pos();
 	}
 
+	/**
+	 * <h2>Initialisation d'un noeud a partir d'un Taquin</h2>
+	 * 
+	 * @author
+	 * @param t
+	 *            jeu de taquin
+	 * 
+	 */
 	public Node(Taquin t) {
 		this.game = "";
 		int[][] game = t.getGame();
@@ -106,6 +138,18 @@ public class Node {
 		this.length = length;
 	}
 
+	/**
+	 * <h2>Premiere heuristique</h2>
+	 * 
+	 * @author
+	 * @return la valeur de h1
+	 * 
+	 *         {@code}
+	 *         <p>
+	 *         h1 est determinee par difference entre la position actuelle et la
+	 *         position de victoir.
+	 *         </p>
+	 */
 	@SuppressWarnings("resource")
 	public int h1() {
 		int h1 = 0;
@@ -119,6 +163,18 @@ public class Node {
 		return h1;
 	}
 
+	/**
+	 * <h2>Deuxieme heuristique</h2>
+	 * 
+	 * @author
+	 * @return la valeur de h2
+	 * 
+	 *         {@code}
+	 *         <p>
+	 *         h2 est la distance de Manhattan de chaque valeur sur la position
+	 *         actuelle par rapport a celle final.
+	 *         </p>
+	 */
 	public int h2() {
 		int h2 = 0;
 		for (int i = 0; i < (length * high - 1); ++i) {
@@ -127,6 +183,20 @@ public class Node {
 		return h2;
 	}
 
+	/**
+	 * <h2>Distance de Manhattan</h2>
+	 * 
+	 * @author
+	 * @param pion
+	 *            le pion a analyser.
+	 * @return la distance de Manhattan de ce pion.
+	 * 
+	 *         {@code}
+	 *         <p>
+	 *         Va parcourir le jeu jusqu'a trouver la valeur dans les deux
+	 *         tableaux. Puis renvoyer la difference entre les deux positions.
+	 *         </p>
+	 */
 	public int dm(int pion) {
 		int[][] victory = toArray(getVictory());
 		int[][] s = toArray(game);
@@ -145,6 +215,14 @@ public class Node {
 		return Math.abs(posFX - posSX) + Math.abs(posFY - posSY);
 	}
 
+	/**
+	 * <h2>Nombre de coup.</h2>
+	 * 
+	 * @author
+	 * @return le nombre de coup qu'il a fallu faire pour arriver a cette
+	 *         position.
+	 * 
+	 */
 	public int g() {
 		int g = 0;
 		if (father != null)
@@ -152,10 +230,32 @@ public class Node {
 		return g;
 	}
 
+	/**
+	 * <h2>L'heuristique</h2>
+	 * 
+	 * @author
+	 * @return la valeur de g, h1 et h2, et renvoi ainsi l'heuristique du noeud.
+	 * 
+	 */
 	public int f() {
 		return g() + h1() + h2();
 	}
 
+	/**
+	 * <h2>Transformation du jeu en tableau</h2>
+	 * 
+	 * @author
+	 * @param s
+	 *            l'etat du jeu.
+	 * @return le jeu transformer en tableau
+	 * 
+	 *         {@code}
+	 *         <p>
+	 *         Comme un noued defini l'etat du jeu par un string, pour une
+	 *         verification accleree, il est necessaire pour certaine fonction
+	 *         de retransformer ce string en tableau.
+	 *         </p>
+	 */
 	@SuppressWarnings("resource")
 	public int[][] toArray(String s) {
 		int[][] res = new int[length][high];
@@ -166,10 +266,24 @@ public class Node {
 		return res;
 	}
 
+	/**
+	 * <h2>Victoire</h2>
+	 * 
+	 * @author
+	 * @return true si la possition est victorieuse, false sinon.
+	 * 
+	 */
 	public boolean win() {
 		return game.equals(getVictory());
 	}
 
+	/**
+	 * <h2>Posistion de victoire</h2>
+	 * 
+	 * @author
+	 * @return la position de victoire
+	 * 
+	 */
 	public String getVictory() {
 		String victory = "";
 		int cpt = 1;
@@ -186,6 +300,16 @@ public class Node {
 		return victory;
 	}
 
+	/**
+	 * <h2>Position du zero</h2>
+	 * 
+	 * @author
+	 * 
+	 *         {@code}
+	 *         <p>
+	 *         Recupere la position du zero dans le jeu actuel.
+	 *         </p>
+	 */
 	public void pos() {
 		int[][] res = toArray(game);
 		for (int i = 0; i < res.length; ++i)
@@ -197,6 +321,18 @@ public class Node {
 				}
 	}
 
+	/**
+	 * <h2>Mouvements possibles</h2>
+	 * 
+	 * @author
+	 * @return une liste contenant tout les mouvements possibles
+	 * 
+	 *         {@code}
+	 *         <p>
+	 *         Cette methodes regarde si un mouvement est possible auquel cas
+	 *         elle l'ajoute dans la liste
+	 *         </p>
+	 */
 	public ArrayList<String> possibleMoves() {
 		ArrayList<String> moves = new ArrayList<String>();
 		if (x != 0)
@@ -210,6 +346,15 @@ public class Node {
 		return moves;
 	}
 
+	/**
+	 * <h2>Executer un mouvement</h2>
+	 * 
+	 * @author
+	 * @param dir
+	 *            la direction souhaitee.
+	 * @return un noeud nouvellement creer avec un jeu apres mouvement.
+	 * 
+	 */
 	public Node makeMove(String dir) {
 		int[][] res = toArray(game);
 		switch (dir) {
@@ -232,6 +377,9 @@ public class Node {
 		return new Node(res);
 	}
 
+	/**
+	 * <h2>Methode HashCode</h2>
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -246,6 +394,9 @@ public class Node {
 		return result;
 	}
 
+	/**
+	 * <h2>Methode Equals</h2>
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -263,6 +414,18 @@ public class Node {
 		return true;
 	}
 
+	/**
+	 * <h2>Compare deux noeuds</h2>
+	 * 
+	 * @author
+	 * @param obj
+	 *            l'objet a comparer a this.
+	 * @return la valeur de la difference entre leurs heuristiques. cette valeur
+	 *         est positive si this a une heuristique superieur, 0 si les
+	 *         heuristique sont egales, et une valeur negative si this a une
+	 *         heuristique plus faible.
+	 * 
+	 */
 	public int compareTo(Object obj) {
 		if (obj instanceof Node) {
 			Node other = (Node) obj;
@@ -271,14 +434,24 @@ public class Node {
 		return -1;
 	}
 
+	/**
+	 * <h2>Methode toString</h2>
+	 */
 	@Override
 	public String toString() {
 		if (father == null) {
 			return dispArray();
 		} else
-			return father.toString() + "\n" + dispArray();
+			return /* father.toString() + "\n" + */dispArray();
 	}
 
+	/**
+	 * <h2>Transformation du jeu en String</h2>
+	 * 
+	 * @author
+	 * @return un String avec le jeu proprement afficher.
+	 * 
+	 */
 	@SuppressWarnings("resource")
 	public String dispArray() {
 		String s = "";
