@@ -96,8 +96,6 @@ public class Terminal {
 					else {
 						// System.out.print((char) Event.ESCAPE);
 						Timer time = new Timer(200, new ActionListener() {
-							int i = 0;
-
 							public void actionPerformed(ActionEvent e) {
 								int index = l.size() - 1;
 								while (index >= 0) {
@@ -113,7 +111,6 @@ public class Terminal {
 									index--;
 								}
 								// System.out.println("t = " + i);
-								i++;
 							}
 						});
 						time.start();
